@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onStartMotion() {
 
-        reconstrain(motion_scene?.getConstraintSet(R.id.start), R.id.square)
+        reconstrain(R.id.start, R.id.square)
 
         motion_scene?.transitionToEnd()
     }
@@ -53,12 +53,20 @@ class MainActivity : AppCompatActivity() {
         motion_scene?.setState(state, widthPixels, heightPixels)
     }
 
-    private fun reconstrain(constraintSet: ConstraintSet?, view: Int) {
+    private fun reconstrain(constraint: Int, view: Int) {
+        val constraintSet = motion_scene?.getConstraintSet(constraint)
         val parent = R.id.motion_scene
         val size = resources.getDimensionPixelSize(R.dimen.object_size)
         val range = resources.displayMetrics.heightPixels - size
         val topMargin = Random.nextInt(range)
-        constraintSet?.setMargin(view, TOP, topMargin)
-        motion_scene?.updateState(R.id.start, constraintSet)
+
+        // `connect` appears to do nothing
+        constraintSet?.connect(view, TOP, parent, TOP, topMargin)
+
+        // setMargin actually has the intended effect
+        // constraintSet?.setMargin(view, TOP, topMargin)
+
+        // `updateState`
+        motion_scene?.updateState(constraint, constraintSet)
     }
 }
