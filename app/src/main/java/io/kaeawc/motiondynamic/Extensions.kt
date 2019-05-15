@@ -1,6 +1,7 @@
 package io.kaeawc.motiondynamic
 
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.motion.widget.MotionScene
 
 fun MotionLayout.after(completion: () -> Unit) {
     this.setTransitionListener(object: MotionLayout.TransitionListener {
@@ -12,6 +13,8 @@ fun MotionLayout.after(completion: () -> Unit) {
                 completion()
             }, 1)
         }
+
+        override fun allowsTransition(transition: MotionScene.Transition): Boolean = true
     })
 }
 
